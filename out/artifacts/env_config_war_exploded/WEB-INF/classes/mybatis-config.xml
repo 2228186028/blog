@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+
+<configuration>
+    
+
+    <!-- Mybairs 数据库配置 -->
+    <properties resource="db.properties"/>
+
+    <!--what fuck ? : open L2 cache !!! -->
+<!--    <settings>-->
+<!--        <setting name="cacheEnabled" value="true" />-->
+<!--    </settings>-->
+
+        <environments default="development">
+        <environment id="development">
+            <transactionManager type="MANAGED"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${mysql1.driver}"/>
+                <property name="url" value="${mysql1.url}"/>
+                <property name="username" value="${mysql1.username}"/>
+                <property name="password" value="${mysql1.password}"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <mappers>
+        <mapper resource="apollo/spl/Dao/OrderMapper.xml"/>
+    </mappers>
+
+</configuration>

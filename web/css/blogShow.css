@@ -1,0 +1,42 @@
+#layout{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border: black solid 1px;
+}
+
+#layout_top_warp{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#layout_top{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /*margin-left: 50px;*/
+    /*margin-right: 50px;*/
+    margin-left: 50px;
+    margin-right: 50px;
+    height: 80px;
+
+    border-bottom: black solid 1px;
+
+}
+
+#mlabel{
+    font-size: 2em;
+}
+
+#layout_title{
+    border: black solid 1px;
+    font-size: 1.5em;
+}
+
+#layout_panel{
+    margin-top: 30px;
+    border: black solid 1px;
+}

@@ -1,0 +1,45 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+                          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+       <title>Document</title>
+   </head>
+ <body>
+
+     <div class="form_group">
+           <div class="form_group_radio" id="radio_div1">
+                   <input type = "radio" name = "optionRadio" id = "optionsRadios1" value = "option1" checked> 题目
+                   <input type = "radio" name = "optionRadio" id = "optionsRadios2" value = "option2"> 答案
+           </div>
+           <div class="form_group_input">
+              <input type="text" name="input_box1" id="input_row1" class="form-control" maxlength="10" style="width: 200px;">
+           </div>
+      </div>
+
+     <div class="form_group">
+           <div class="form_group_radio">
+                   <input type = "radio" name = "optionRadio1" id = "optionsRadios3" value = "option1" checked> 题目
+                   <input type = "radio" name = "optionRadio1" id = "optionsRadios4" value = "option2"> 答案
+           </div>
+           <div class="form_group_input">
+               <input type="text" name="input_box2" id="input_row2" class="form-control" maxlength="10" style="width: 200px;">
+           </div>
+       </div>
+ <script>
+
+       // document.querySelectorAll("input[type='radio']")是获取网页上所有type属性为radio的input元素
+       document.querySelectorAll("input[type='radio']").forEach(item=>{
+             item.addEventListener('click', event=>{
+                   console.log(event.target.value);
+                   if (event.target.value == "option1") {
+                        alert("option1");
+                     } else {
+                         alert("option2");
+                     }
+               })
+         })
+   </script>
+ </body>
+ </html>

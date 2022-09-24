@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>鼠标拖动div</title>
+    <style media="screen">
+        .move {
+            width: 400px; height: 300px;
+            margin: 0 auto; border: 1px solid #cccccc;
+            position: absolute; left: 200px; top: 100px;
+            background: #e1eafc;
+        }
+        .move-header {
+            height: 50px; line-height: 50px;
+            text-align: center; background: #beceeb;
+            cursor: move;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="move" id="move">
+    <div class="move-header" id="move-header">
+        按住拖拽
+    </div>
+    <div class="move-body">
+        实现步骤。。。。
+        <p>1. 鼠标按下时，标记元素为可拖动状态，并记下鼠标当前位置的偏移；</p>
+        <p>2. 鼠标开始移动，判断元素状态是否可以拖动，如果是则更新元素位置到当前鼠标的位置；</p>
+        <p>3. 放开鼠标后，元素变为不可拖动状态。</p>
+    </div>
+</div>
+
+
+
+
+<script>
+    window.onload = function () {
+        var mouseOffsetX = 0; // 记录当前鼠标位置
+        var mouseOffsetY = 0;
+        var isDraging = false; // 记录元素是否可以拖动
+
+        // 鼠标事件1：鼠标按下标记元素为可拖动状态，并且记下鼠标当前位置的偏移
+        get('move-header').addEventListener('mousedown', function (e) {
+            var e = e || window.event;
+            // 鼠标距离div左侧偏移距离 =  e.pageX鼠标距离页面左侧距离 - get('move').offsetLeft为div距离页面左侧距离
+            mouseOffsetX = e.pageX - get('move').offsetLeft;
+            mouseOffsetY = e.pageY - get('move').offsetTop;
+
+            isDraging = true;
+        })
+
+        // 鼠标事件2：鼠标开始移动，要检测浮层是否标记为移动，如果是则更新元素位置到当前鼠标位置
+        document.onmousemove = function (e) {
+            var e = e || window.event;
+            var moveX = 0;
+            var moveY = 0;
+
+            if (isDraging === true) {
+                // div左侧距离页面左侧距离 = e.pageX鼠标距离页面左侧距离 - mouseOffsetX鼠标距离div左侧偏移距离
+                moveX = e.pageX - mouseOffsetX;
+                moveY = e.pageY - mouseOffsetY;
+
+                // 设置
+                get('move').style.left = moveX + "px";
+                get('move').style.top = moveY + "px";
+            }
+
+        }
+
+        //  鼠标事件3：放开鼠标后，元素变为不可拖动
+        document.onmouseup = function () {
+            isDraging = false;
+        }
+
+        function get (id) {
+            return document.getElementById(id)
+        }
+    }
+
+</script>
+</body>
+</html>

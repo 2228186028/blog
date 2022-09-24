@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+<!--    <link rel="stylesheet" type="text/css" href="css/login_box.css">-->
+    <script type="text/javascript" src="javascript/jquery.js"></script>
+    <script type="text/javascript" src="javascript/index.js"></script>
+<!--    <script type="text/javascript" src="javascript/login_box.js"></script>-->
+    <title>个人日志</title>
+</head>
+
+<body>
+
+<div id = "good">
+    <div id="container">
+        <div id = "blog_name">
+            <p>逗萝小屋</p>
+        </div>
+
+        <div id = "header">
+            <div id = "navigation">
+                <button onclick="toLogin()">登录</button>
+                <button onclick="toTechnology()">IT技术</button>
+                <button onclick="toAlbum()">相册</button>
+                <button onclick="toMusic()">音乐</button>
+                <button onclick="toGame()">游戏</button>
+            </div>
+            <div id = "search">
+                <input type="text" name="pwd">
+                <button>搜索</button>
+            </div>
+        </div>
+
+        <div id = "navigator_player">
+            <button onclick="addBlog">添加 play</button>
+        </div>
+
+        <div id = "container_warp">
+            <div id = "mcontent"></div>
+        </div>
+    </div>
+
+    <!-- 登录框 -->
+    <div id="hsDiv" style="display:None;">
+
+        <div id="loginHeader" >
+            <!-- 登陆标题 -->
+            <div id="dlTitle">登陆</div>
+
+            <!-- 右上角关闭按钮 -->
+            <div id="closediv">
+                <a href="javascript:void(0);" onclick="hidden_box()">x</a>
+            </div>
+        </div>
+
+        <!-- 登陆div -->
+        <div id="tbdiv">
+
+            <table id="logintb">
+                <tr>
+                    <td class="logintd1">用户名/Email：</td>
+                </tr>
+                <tr>
+                    <td class="logintd2"><input type="text" name="" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="logintd1">密码：</td>
+                </tr>
+                <tr>
+                    <td class="logintd2"><input type="password" name="" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="logintd3"><input type="checkbox"> Remember
+                        Me 记住我 <a href="javascript:void(0);">忘记密码？</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="logintd4"><input type="submit" value="登 陆">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="overDiv" style="display:None;"></div>
+</div>
+
+</body>
+
+
+<script>
+    function toTechnology(){
+        $("#mcontent").load("html/technology.html")
+    }
+    function toGame(){
+        $("#mcontent").load("html/game.html")
+    }
+    function toAlbum(){
+        $("#mcontent").load("html/album.html")
+    }
+    function toMusic(){
+        $("#mcontent").load("html/music.html")
+    }
+
+    function toLogin(){
+        document.getElementById("overDiv").style.display = "block"
+        document.getElementById("hsDiv").style.display = "block"
+
+    }
+
+    function hidden_box(){
+        document.getElementById("hsDiv").style.display = "None"
+        document.getElementById("overDiv").style.display = "None"
+    }
+
+
+</script>
+
+
+<!--拖拽登录框-->
+
+<script>
+
+    var pos = function (o, x, y, event) {  //鼠标定位赋值函数
+
+        var posX = 0, posY = 0;  //临时变量值
+        var e = event || window.event;  //标准化事件对象
+        if (e.pageX || e.pageY) {  //获取鼠标指针的当前坐标值
+            posX = e.pageX;
+            posY = e.pageY;
+        } else if (e.clientX || e.clientY) {
+            posX = event.clientX + document.documentElement.scrollLeft + document.body.scrollLeft;
+            posY = event.clientY + document.documentElement.scrollTop + document.body.scrollTop;
+        }
+        o.style.position = "absolute";  //定义当前对象为绝对定位
+        o.style.top = (posY + y) + "px";  //用鼠标指针的y轴坐标和传入偏移值设置对象y轴坐标
+        o.style.left = (posX + x) + "px";  //用鼠标指针的x轴坐标和传入偏移值设置对象x轴坐标
+
+    }
+
+    // 获取内联和外部的 css 属性 ！！！
+    function getStyle(obj,attr)
+    {
+        if(typeof getComputedStyle)
+            return getComputedStyle(obj,null)[attr];
+        else return obj.currentStyle[attr];
+    }
+
+    window.onload = function () {
+
+        // 登录框移动
+        var hsDraging = false;
+        var hsLeft, hsTop;
+        var mouseLeft = 0, mouseTop = 0;
+
+        // 监听鼠标按下， 获取鼠标按下的位置， 获取div初始位置， 设置可以挪动为 True ..
+        document.getElementById("loginHeader").addEventListener("mousedown", function (event) {
+
+            hsDraging = true;
+            hsLeft = parseFloat(getStyle(document.getElementById("hsDiv"), "left"))
+            hsTop = parseFloat(getStyle(document.getElementById("hsDiv"), "top"))
+
+            //  获取鼠标所在坐标
+            var e = event || window.event;  // 标准化事件对象
+            if (e.pageX || e.pageY) {  // 获取鼠标指针的当前坐标值
+                mouseLeft = e.pageX;
+                mouseTop = e.pageY;
+            }else if (e.clientX || e.clientY) {
+                mouseLeft = event.clientX + document.documentElement.scrollLeft + document.body.scrollLeft;
+                mouseTop = event.clientY + document.documentElement.scrollTop + document.body.scrollTop;
+            }
+        })
+
+
+        // 鼠标移动
+        document.onmousemove = function (event){
+
+            if(hsDraging){
+                var mouseLeftNew, mouseTopNew;
+                var e = event || window.event;
+
+                if (e.pageX || e.pageY) {  // 获取鼠标指针的当前坐标值
+                    mouseLeftNew = e.pageX;
+                    mouseTopNew = e.pageY;
+                }else if (e.clientX || e.clientY) {
+                    mouseLeftNew = event.clientX + document.documentElement.scrollLeft + document.body.scrollLeft;
+                    mouseTopNew = event.clientY + document.documentElement.scrollTop + document.body.scrollTop;
+                }
+                var newPosLeft = hsLeft + mouseLeftNew - mouseLeft
+                var newPosTop = hsTop + mouseTopNew - mouseTop
+
+
+                document.getElementById("hsDiv").style.position = "absolute"
+                document.getElementById("hsDiv").style.left = newPosLeft + "px"
+                document.getElementById("hsDiv").style.top = newPosTop + "px"
+
+            }
+        }
+        document.onmouseup = function (){
+            hsDraging = false;
+        }
+
+    }
+
+</script>
+
+
+
+</html>

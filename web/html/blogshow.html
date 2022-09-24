@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>浏览</title>
+
+    <link href="../css/blogShow.css" type="text/css" rel="stylesheet">
+    <script src = "../../node_modules/marked/marked.min.js"></script>
+
+</head>
+
+<body>
+
+        <div id="layout">
+
+            <div id = "layout_top_warp">
+                <div id = "layout_top">
+                    <div>
+                        <label id = "mlabel">文章:&emsp;</label>
+                    </div>
+                    <div id = "layout_title">这是文章标题</div>
+                </div>
+            </div>
+
+            <div id = "layout_panel">
+                啦啦啦啦啦
+                <br />
+                <br />
+                <br />
+                <br />                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                的是多久啊离开家离开
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                的是多久啊离开家离开
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+        <script>
+            window.onload=function (){
+                changeHeight();
+            }
+            window.onresize=function (){
+                changeHeight();
+            }
+        </script>
+
+        <script>
+            function changeHeight(){
+
+                let w = document.documentElement.clientWidth;
+                let h = document.documentElement.clientHeight;
+
+                //
+                document.getElementById("layout_top").style.width = w * 0.95 + "px"
+
+                // document.getElementById("editor_pannel").style.width= w/2 + "px";
+                document.getElementById("layout_panel").style.width= w * 0.8 + "px";
+
+                if(h < document.getElementById("layout_panel").style.height) {
+                    document.getElementById("layout_panel").style.height = h * 0.9 + "px";
+                }
+
+            }
+        </script>
+
+</body>
+
+</html>

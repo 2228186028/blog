@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="env_config:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/env_config_war</output-path>
+    <root id="archive" name="env_config_war.war">
+      <element id="artifact" artifact-name="env_config:war exploded" />
+    </root>
+  </artifact>
+</component>

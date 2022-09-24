@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>写文章</title>
+    <link href="../css/blogEdit.css" type="text/css" rel="stylesheet">
+    <script src = "../../node_modules/marked/marked.min.js"></script>
+</head>
+<body>
+
+    <div class = "title_part" style="height: 50px; display: flex; flex-direction: row">
+
+        <div>标题：</div>
+        <div>
+            <input type="text" name="firstname"><br>
+        </div>
+
+        <div>权限：</div>
+        <select name = "permission">
+            <option value="0">本人可见</option>
+            <option value="1">公共可见</option>
+        </select>
+
+        <button id =“submit”>发布文章</button>
+        <button onclick="toPreview()"> Pre Test </button>
+        <div id = "test"></div>
+
+        <!--解析编辑框中的内容到预览框-->
+        <script>
+            function toPreview(){
+                var text = document.getElementById("editor_inner").innerText;
+                document.getElementById("show_pannel").innerHTML = marked.parse(text);
+            }
+        </script>
+
+    </div>
+
+
+    <div class="layout">
+        <!--完整的分栏页面-->
+
+        <div id = "mpannel" class="layout__panel flex flex--row">
+
+            <div class="gutter" style="left: 0px"></div>
+            <div id = "editor_pannel" class="layout__pannel layout__panel--editor" style="width: 513px; font-size: 1.5em">
+                    <!--内嵌 markdown 编辑器-->
+                <pre id="editor_inner"  tabindex="0" contenteditable="true" style="" autofocus="autofocus"></pre>
+            </div>
+
+            <!--这里是中间的那个竖条-->
+            <div id = "tool_bar" class="layout__panel--button--bar" style="width: 26px;">
+                <button id = "skipTopreview">*_*</button>
+            </div>
+
+            <!--这是右边显示的那个-->
+            <div id = "show_pannel_warp">
+                <div id = "suspend" style="display: none; z-index:1; position: relative;">
+                    <button id = "skipToeditor" style="font-size: 2em;">编辑</button>
+                </div>
+
+                <div id = "show_pannel" class="layout__panel layout__panel--preview"
+                     style="width: 513px; font-size: 15px; display: block; position: absolute; top: 0px"
+                     aria-hidden="true">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--跳转到预览框的相关逻辑-->
+    <script>
+        document.getElementById("skipTopreview").addEventListener("click", (event)=>{
+            // 隐藏编辑框
+            var editBox = document.getElementById("editor_pannel");
+            var toolBar = document.getElementById("tool_bar");
+            var previewBox = document.getElementById("show_pannel");
+            var suspendDiv =  document.getElementById("suspend")
+
+
+            editBox.style.display = "none";
+            toolBar.style.display = "none";
+
+            previewBox.style.width =  0.95 * document.documentElement.clientWidth  + "px";
+            previewBox.style.overflow = "visible";
+
+            <!--设置浮动按钮位置到最右方-->
+            suspendDiv.style.display = "block";
+            suspendDiv.style.left =  parseFloat(previewBox.style.width) - parseFloat(suspendDiv.clientWidth) + "px"
+
+
+            window.onresize = function() {
+                previewBox.style.width = 0.95 * document.documentElement.clientWidth  + "px";
+                suspendDiv.style.left =  parseFloat(previewBox.style.width) - parseFloat(suspendDiv.clientWidth) + "px";
+            }
+        })
+
+    </script>
+
+    <script>
+        document.getElementById("skipToeditor").addEventListener("click", (event)=>{
+            var editBox = document.getElementById("editor_pannel");
+            var toolBar = document.getElementById("tool_bar");
+            var previewBox = document.getElementById("show_pannel");
+            var suspendDiv =  document.getElementById("suspend");
+
+            <!--显示编辑框和工具栏， 隐藏 skiptoeditor 按钮-->
+            editBox.style.display = "block";
+            toolBar.style.display = "block";
+            suspendDiv.style.display = "none";
+
+            previewBox.style.overflow = "scroll"
+            changeHeight();
+
+            window.onresize = function (){
+                changeHeight();
+            }
+
+
+        });
+
+    </script>
+
+
+    <!--监听pre标签内容的改变， -->
+    <script>
+        function markdownSync(){
+
+            // 选择将观察突变的节点
+            var targetNode = document.getElementById('editor_inner');
+
+            var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver
+
+            MutationObserver = window.MutationObserver
+            DocumentObserver = new MutationObserver(function() {
+                //BALABALABALA
+                var text = document.getElementById("editor_inner").innerText;
+                document.getElementById("show_pannel").innerHTML = marked.parse(text+"</br></br></br></br>");
+            });
+
+            DocumentObserverConfig = {
+                attributes: false,
+                childList: true,
+                characterData: true,
+                subtree: true
+            };
+
+            DocumentObserver.observe(targetNode, DocumentObserverConfig);
+
+            function refreshObserver() {
+                DocumentObserver.disconnect();
+                DocumentObserver.observe(targetNode, DocumentObserverConfig);
+            }
+
+            // 30s 刷新一次
+            setInterval(function () { //每5秒刷新一次图表
+                //需要执行的代码写在这里
+                refreshObserver();
+            }, 30000);
+
+        }
+
+    </script>
+
+
+    <!--同步滚动条 -->
+    <script>
+        function scrollbarSync(){
+            var editDom = document.getElementById("editor_pannel");
+            editDom.addEventListener("scroll",  (event) => {
+                var previewDom = document.getElementById("show_pannel");
+                if(event.target.scrollHeight - event.target.clientHeight > 0 && previewDom.scrollHeight - previewDom.clientHeight > 0) {
+                    var ratio = (previewDom.scrollHeight - previewDom.clientHeight) / (event.target.scrollHeight - event.target.clientHeight);
+                    previewDom.scrollTop = Math.round(event.target.scrollTop * ratio);
+                }
+            });
+        }
+    </script>
+
+    <script>
+      <!-- 当浏览器窗口大小改变的时候，重新设置编辑框和预览框的大小 -->
+      window.onresize = function(){
+          changeHeight();
+      }
+      function changeHeight(){
+
+          let w = document.documentElement.clientWidth;
+          let h = document.documentElement.clientHeight;
+
+          document.getElementById("editor_pannel").style.width= w/2 + "px";
+          document.getElementById("show_pannel").style.width= w/2 + "px";
+          document.getElementById("mpannel").style.height=h + "px";
+
+      }
+    </script>
+
+    <!--启动的时候自动执行的函数-->
+    <script>
+        window.onload = function (){
+
+            <!--调整编辑框和预览款两个窗口的大小-->
+            changeHeight();
+            markdownSync();
+            scrollbarSync();
+        }
+
+    </script>
+
+
+</body>
+</html>

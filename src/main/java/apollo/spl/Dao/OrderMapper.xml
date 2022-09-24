@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="apollo.spl.Dao.OrderMapper">
+
+    <!--Use 2L cache-->
+<!--    <cache type="org.mybatis.caches.redis.RedisCache"></cache>-->
+
+    <!--            select          -->
+    <select id="selectAll" resultType="apollo.spl.Pojo.Order">
+        select * from `order`
+    </select>
+
+    <select id = "selectById" resultType="apollo.spl.Pojo.Order">
+        select * from `order` where id = #{id}
+    </select>
+
+    <!--           exist            -->
+    <select id="exist" resultType="java.lang.Boolean">
+        SELECT EXISTS(SELECT 1 FROM `order` WHERE id = #{id})
+    </select>
+
+    <!--            insert          -->
+    <!--For primary key increase ... -->
+    <insert id = "insert" >
+        insert into `order`(id, description, status)
+        values (#{id}, #{description}, #{status})
+    </insert>
+
+    <!--            delete          -->
+    <delete id = "deleteById">
+        delete from `order` where id = #{id}
+    </delete>
+
+
+    <!--            update          -->
+    <update id = "update">
+        update `order` set
+            id = #{id},
+            description = #{description},
+            status = #{status}
+        where id = #{id}
+    </update>
+
+
+</mapper>
